@@ -99,15 +99,20 @@
 				  <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
 				</div>
 				<div class="modal-body">
-				  <div id="content-one">爱我的人才能打开！！！</div>
-				  <!-- <div id="content-tow" hidden>真的爱我吗？如果爱，请对着手机说出来，是可以识别的哦！</div>
-				  <div id="luying" hidden>录音中......</div> -->
+				  <div id="content-one">爱我的人才能打开！&#x1F604;&#x1F604;&#x1F604;</div>
+				  <div id="nolove-content" hidden>这是给很爱我的人看的页面,不爱请离开 &#x1F61E; &#x1F61E; &#x1F61E;</div>
+				  <div id="content-tow" hidden>真的爱我吗？如果爱，请说“我爱你”，是可以识别的哦！</div>
+				  <div id="luying" hidden>录音中......</div>
+				  <div id="no-sound" style="display: none;"></div>
+				  <input type="text" class="form-control" id="input1" placeholder="请在这里输入" style="display: none;">
 				</div>
 				<div class="modal-footer">
 				  <button type="button" id="nolove2" class="btn btn-secondary" >不爱</button>
 				  <button type="button" id="nolove" class="btn btn-warning" >一般爱</button>
 				  <button type="button" id="love" class="btn btn-danger">爱的不行不行的</button>
-				  <!-- <button type="button" id="say-content" class="btn btn-danger">点击录音</button> -->
+				  <button type="button" id="say-content" class="btn btn-danger" style="display: none;">点击录音</button>
+				  <button type="button" id="say-over" class="btn btn-danger" style="display: none;">点击结束录音</button>
+				  <button type="button" id="shuru" class="btn btn-danger" style="display: none;">确定</button>
 				</div>
 			  </div>
 			</div>
@@ -117,14 +122,59 @@
 		<script>
 			
 			(function () {
-				// $("#say-content").click(function(){
-				// 	$("#luying").show()
-				// })
+				let num = 1
+				$("#say-content").click(function(){
+					document.getElementById("luying").hidden = false
+					document.getElementById("content-tow").hidden = true
+					$("#say-content").hide()
+					$("#say-over").show()
+					$("#no-sound").hide()
+				})
+				$("#say-over").click(function(){
+					num++
+					if(num<4){
+						$("#no-sound").show()
+						document.getElementById("luying").hidden = true
+						$("#no-sound").text("未识别，请点击按钮重新录音!")
+						$("#say-content").show()
+						$("#say-over").hide()
+					}else{
+						$("#no-sound").show()
+						$("#no-sound").text("算了，不知道是没说，还是识别不了，打字输入吧!")
+						document.getElementById("luying").hidden = true
+						$("#say-over").hide()
+						$("#shuru").show()
+						$("#input1").show()
+					}
+					
+				})
+				$("#shuru").click(function(){
+					let text = $("#input1").val()
+					if(text.includes("我爱你") && !text.includes("不")){
+						$(".modal").modal("hide")
+						hold = 0;
+						canvas.unbind("click");
+						canvas.unbind("mousemove");
+						canvas.removeClass("hand");
+					}else{
+						$("#no-sound").show()
+						$("#no-sound").text("不老实哦，再输入一次，不然就看不了喽！")
+						$("#input1").val('')
+					}
+				})
 				$("#nolove").click(function(){
-					$("#nolove").hide()
+					document.getElementById("content-one").hidden = true
+					document.getElementById("nolove-content").hidden = false
+					setTimeout(() => {
+						window.close()
+					}, 1000);
 				})
 				$("#nolove2").click(function(){
-					$("#nolove2").hide()
+					document.getElementById("content-one").hidden = true
+					document.getElementById("nolove-content").hidden = false
+					setTimeout(() => {
+						window.close()
+					}, 1000);
 				})
 				
 				var canvas = $("#canvas");
@@ -191,11 +241,17 @@
 				var foot = tree.footer;
 				var hold = 1;
 				$("#love").click(function(e){
-					$(".modal").modal("hide")
-					hold = 0;
-					canvas.unbind("click");
-					canvas.unbind("mousemove");
-					canvas.removeClass("hand");
+					document.getElementById("content-one").hidden = true
+					document.getElementById("content-tow").hidden = false
+					$("#nolove").hide()
+					$("#nolove2").hide()
+					$("#love").hide()
+					$("#say-content").show()
+					// $(".modal").modal("hide")
+					// hold = 0;
+					// canvas.unbind("click");
+					// canvas.unbind("mousemove");
+					// canvas.removeClass("hand");
 				})
 				canvas
 					.click(function (e) {
