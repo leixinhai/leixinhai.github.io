@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="Pragma" content="no-cache">
 		<title>leila大小姐</title>
 		<link type="text/css" rel="stylesheet" href="./lxh/default.css" />
 		<link href="./lxh/bootstrap.min.css" rel="stylesheet">
@@ -122,6 +123,13 @@
 		<script>
 			
 			(function () {
+				let now = new Date()
+				if(sessionStorage.getItem("t")===null){
+					window.location.replace("./star.html");
+				}
+				if(now-sessionStorage.getItem("t")>1000*60*10){
+					window.location.replace("./star.html");
+				}
 				let num = 1
 				$("#say-content").click(function(){
 					document.getElementById("luying").hidden = false
